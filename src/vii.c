@@ -55,7 +55,7 @@ int main(int argc,const char **argv)
 				while(src && *src){
 					if(islower(*src))
 						*target = *src - 32;
-					else if(isupper(*src)||isdigit(*src))
+					else if(isupper(*src) || isdigit(*src) || *src == '_')
 						*target = *src;
 					else if(*src == '.')
 						*target = '_';

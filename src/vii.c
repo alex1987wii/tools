@@ -33,18 +33,41 @@ int main(int argc,const char **argv)
 	if(strlen(argv[1]) > 2){
 		/*get last two char as suffix */
 		suffix = argv[1]+strlen(argv[1]) - 2;
-		if(access(argv[1],F_OK) && (!strcmp(".c",suffix) || !strcmp(".C",suffix)) ){
-			/*if is c source file and it's not exist,then create it and add comment in */
-			pend_info(comment,"/***********************************************\n");
-			pend_info(comment,"*	Filename    :%s\n",argv[1]);
-			pend_info(comment,"*	Author      :%s\n",getlogin());
-			pend_info(comment,"*	Date	    :%s",asctime(localtime(&current_time)));
-			pend_info(comment,"*	Purpose     :\n");
-			pend_info(comment,"*	Description :\n");
-			pend_info(comment,"*\n");
-			pend_info(comment,"***********************************************/\n");
-			pend_info(comment,"\n");
+		if(access(argv[1],F_OK)){
+			if(!strcmp(".c",suffix) || !strcmp(".h",suffix) || !strcmp(".C",suffix)) {
+				/*if is c source file and it's not exist,then create it and add comment in */
+				pend_info(comment,"/***********************************************\n");
+				pend_info(comment,"*	Filename    :%s\n",argv[1]);
+				pend_info(comment,"*	Author      :%s\n",getlogin());
+				pend_info(comment,"*	Date	    :%s",asctime(localtime(&current_time)));
+				pend_info(comment,"*	Purpose     :\n");
+				pend_info(comment,"*	Description :\n");
+				pend_info(comment,"*\n");
+				pend_info(comment,"***********************************************/\n");
+				pend_info(comment,"\n");
+			}
+			if(!strcmp(".h",suffix)){
+				/*if it's header file,add header protector*/
+				char header_protector[256];
+				const char *src = argv[1];
+				char *target = header_protector;
+				/*covert filename to MACRO*/
+				while(src && *src){
+					if(islower(*src))
+						*target = *src - 32;
+					else if(isupper(*src)||isdigit(*src))
+						*target = *src;
+					else if(*src == '.')
+						*target = '_';
+					else
+						--target;
+					++target;
+					++src;
+				}
+				*target = 0;
+				pend_info(comment,"#ifndef\t%s\n#define\t%s\n\n#endif\n",header_protector,header_protector);
 
+			}
 			fd = open(argv[1],O_RDWR | O_CREAT,0777);
 			if(fd == -1){
 				fprintf(stderr,"%s:%s open failed\n",strerror(errno),argv[1]);

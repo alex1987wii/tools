@@ -19,7 +19,7 @@ int main(int argc,const char **argv)
 	time_t current_time;
 	int fd;
 	if(argc > 2){
-		fprintf(stdout,"too many argument!");
+		fprintf(stdout,"too many argument!\n");
 		exit(1);
 	}
 	if(argc == 1){

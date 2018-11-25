@@ -1,13 +1,13 @@
-SRCDIR=$(CURDIR)/src
-INCDIR=$(CURDIR)/include
-OBJDIR=$(CURDIR)/obj
-BINDIR=$(CURDIR)/bin
-SRC=$(wildcard $(SRCDIR)/*.c)
-BIN=$(patsubst $(SRCDIR)/%.c,$(BINDIR)/%,$(SRC))
-OBJ=$(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRC))
-
+CFLAGS=
+STRIP=strip
+RMDIR=rmdir
+SRC=$(wildcard ./src/*.c)
+BIN=$(patsubst ./src/%.c,./bin/%,$(SRC))
 all:$(BIN)
-
-$(MAKECMDGOALS):
-
-.PHONY:all $(TARGET) clean
+	
+./bin/%:./src/%.c
+	$(CC) -o $@ $< $(CFLAGS)
+	$(STRIP) $@
+clean:
+	$(RM) ./bin/*
+.PHONY:all clean

@@ -1,0 +1,12 @@
+CFLAGS=
+SRC=$(wildcard ./src/*.c)
+BIN=$(notdir $(basename $(SRC)))
+TARGET=$(patsubst %,./bin/%,$(BIN))
+all:
+	for i in $(BIN);do\
+		$(CC) -o ./bin/$$i ./src/$$i.c $(CFLAGS);\
+	done
+test:
+	@echo "SRC=$(SRC)"
+	@echo "BIN=$(BIN)"
+	@echo "TARGET=$(TARGET)"

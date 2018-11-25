@@ -68,7 +68,7 @@ int main(int argc,const char **argv)
 				pend_info(comment,"#ifndef\t%s\n#define\t%s\n\n#endif\n",header_protector,header_protector);
 
 			}
-			fd = open(argv[1],O_RDWR | O_CREAT,0766);
+			fd = open(argv[1],O_RDWR | O_CREAT,0666);
 			if(fd == -1){
 				fprintf(stderr,"%s:%s open failed\n",strerror(errno),argv[1]);
 				exit(1);

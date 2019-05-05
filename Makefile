@@ -1,9 +1,13 @@
 CFLAGS=
+BINDIR=./bin
 STRIP=strip
 RMDIR=rmdir
 SRC=$(wildcard ./src/*.c)
 BIN=$(patsubst ./src/%.c,./bin/%,$(SRC))
-all:$(BIN)
+all:$(BINDIR) $(BIN)
+
+$(BINDIR):
+	[ -d "./bin" ] || mkdir ./bin
 	
 ./bin/%:./src/%.c
 	$(CC) -o $@ $< $(CFLAGS)
